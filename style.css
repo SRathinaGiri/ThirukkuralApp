@@ -137,7 +137,20 @@ footer p {
 
 /* Responsive layout for mobile */
 @media (max-width: 768px) {
-    .container { flex-direction: column; padding: 0.5rem; }
-    #left-panel { padding-right: 0; }
+    .container {
+        flex-direction: column;
+        padding: 0.5rem;
+    }
+
+    #right-panel {
+        order: -1;
+        margin-bottom: 1rem;
+    }
+
+    #left-panel {
+        padding-right: 0;
+        order: 0;
+    }
+
     .card { padding: 1rem; }
 }
