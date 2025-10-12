@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>திருக்குறள் ஆய்வி</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4A90E2"/>
+</head>
+<body>
+
+    <header>
+        <h1>திருக்குறள் ஆய்வி</h1>
+    </header>
+
+    <div class="container">
+        <aside id="left-panel">
+            <div id="install-card" class="card hidden">
+                <button id="install-button">செயலியை நிறுவவும்</button>
+            </div>
+
+            <div class="card filters">
+                <h2>வடிப்பான்கள்</h2>
+                
+                <div class="filter-group">
+                    <label for="paul-select">பால்</label>
+                    <select id="paul-select" class="dropdown">
+                        <option value="">அனைத்தும்</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="iyal-select">இயல்</label>
+                    <select id="iyal-select" class="dropdown">
+                        <option value="">அனைத்தும்</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="adikaram-select">அதிகாரம்</label>
+                    <select id="adikaram-select" class="dropdown">
+                        <option value="">அனைத்தும்</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="kurals-per-page">ஒரு பக்கத்திற்கான குறள்கள்</label>
+                    <select id="kurals-per-page" class="dropdown">
+                        <option value="1" selected>1</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+
+                <hr>
+                
+                <div class="search-section">
+                    <div class="filter-group">
+                        <label for="kural-number">குறள் எண் மூலம் தேடவும்</label>
+                        <input type="number" id="kural-number" min="1" max="1330" placeholder="எ.கா: 1 முதல் 1330 வரை">
+                    </div>
+    
+                    <div class="filter-group">
+                        <label for="search-box">சொல் மூலம் தேடவும்</label>
+                        <input type="text" id="search-box" placeholder="ஒரு சொல்லை உள்ளிடவும்...">
+                    </div>
+
+                    <div class="checkbox-group search-option">
+                        <input type="checkbox" id="search-in-explanations" checked>
+                        <label for="search-in-explanations">விளக்கங்களிலும் தேடவும்</label>
+                    </div>
+
+                    <button id="search-button">தேடு</button>
+                </div>
+            </div>
+
+            <div class="card explanations">
+                <h2>விளக்கங்களைக் காட்டவும்</h2>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="show-english" checked>
+                    <label for="show-english">ஆங்கில விளக்கம்</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="show-mk" checked>
+                    <label for="show-mk">மு. கருணாநிதி</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="show-mv" checked>
+                    <label for="show-mv">மு. வரதராசன்</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="show-sp" checked>
+                    <label for="show-sp">சாலமன் பாப்பையா</label>
+                </div>
+            </div>
+
+            <div id="stats-container" class="card hidden">
+                <h3>தேடல் புள்ளிவிவரம்</h3>
+                <p>தேர்ந்தெடுக்கப்பட்ட குறட்பாக்களின் எண்ணிக்கை: <strong id="kural-count">0</strong></p>
+                <p>மொத்த சொற்களின் எண்ணிக்கை: <strong id="word-count">0</strong></p>
+                <div id="top-words-container">
+                    <p><strong>அதிகம் பயன்படுத்தப்பட்ட சொற்கள்:</strong></p>
+                    <ol id="top-words-list"></ol>
+                </div>
+            </div>
+        </aside>
+
+        <main id="right-panel">
+            <div id="pagination-container" class="hidden">
+                <button id="prev-button">முன்</button>
+                <span id="page-info"></span>
+                <button id="next-button">பின்</button>
+            </div>
+
+            <div id="results-container">
+                </div>
+        </main>
+    </div>
+    <footer>
+        <p>ஒருங்கிணைப்பு: <strong>சுப. இரத்தினகிரி</strong></p>
+        <p>உருவாக்கம்: <strong>கூகிள் ஜெமினி</strong></p>
+    </footer>    
+
+    <script src="https://unpkg.com/papaparse@latest/papaparse.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

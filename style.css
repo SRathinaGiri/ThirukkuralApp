@@ -1,0 +1,149 @@
+/* General Body Styles */
+:root {
+    --primary-color: #4A90E2;
+    --secondary-color: #28a745; /* Color for install button */
+    --light-gray: #f4f4f9;
+    --dark-gray: #333;
+    --text-color: #333;
+    --card-bg: #fff;
+    --shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--light-gray);
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.6;
+}
+
+header {
+    background-color: var(--dark-gray);
+    color: var(--card-bg);
+    padding: 1rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#left-panel { flex: 1; min-width: 280px; padding-right: 1rem; }
+#right-panel { flex: 3; min-width: 300px; }
+
+/* Card Styling */
+.card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+}
+
+h2, h3 {
+    margin-top: 0;
+    color: var(--primary-color);
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+hr { border: none; border-top: 1px solid #eee; margin: 1.5rem 0; }
+
+/* Filter & Search Styling */
+.filter-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #666; }
+.dropdown, input[type="number"], input[type="text"] { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; box-sizing: border-box; }
+.checkbox-group { display: flex; align-items: center; margin-bottom: 0.5rem; }
+.checkbox-group.search-option { margin: 1rem 0; }
+.checkbox-group.search-option label { font-weight: normal; }
+
+#search-button {
+    width: 100%; padding: 0.9rem; font-size: 1.1rem; font-weight: bold;
+    color: var(--card-bg); background-color: var(--primary-color);
+    border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.2s;
+}
+#search-button:hover { background-color: #357ABD; }
+
+/* Install Button Styling */
+#install-button {
+    width: 100%; padding: 0.9rem; font-size: 1.1rem; font-weight: bold;
+    color: var(--card-bg); background-color: var(--secondary-color);
+    border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.2s;
+}
+#install-button:hover { background-color: #218838; }
+
+/* Statistics Card Styling */
+#stats-container p { margin: 0.5rem 0; }
+#top-words-list { padding-left: 1.5rem; margin: 0.5rem 0 0 0; }
+#top-words-list li { margin-bottom: 0.25rem; }
+
+/* Kural Result Card */
+.kural-card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+    border-left: 5px solid var(--primary-color);
+}
+.kural-header { font-size: 0.9rem; color: #777; margin-bottom: 1rem; }
+.kural-text-container { background-color: #fdfdfd; border: 1px solid #eee; border-radius: 6px; padding: 1rem; margin: 1rem 0; }
+.kural-text { font-size: 1.5rem; font-weight: bold; line-height: 2.2rem; color: #222; }
+.explanation-section { margin-top: 1rem; padding-left: 1rem; border-left: 3px solid #eee; }
+.explanation-section h4 { margin: 0 0 0.5rem 0; color: var(--primary-color); }
+.explanation-section p { margin: 0; font-style: italic; color: #555; }
+
+/* Pagination Styling */
+#pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    margin-bottom: 1rem; /* Added margin for spacing */
+}
+#pagination-container button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: var(--card-bg);
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#pagination-container button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+#page-info {
+    margin: 0 1rem;
+    font-weight: bold;
+}
+
+.hidden { display: none; }
+
+/* New Footer Styling */
+footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    margin-top: 2rem;
+    background-color: #e9ecef;
+    color: #6c757d;
+    font-size: 0.9rem;
+    border-top: 1px solid #dee2e6;
+}
+
+footer p {
+    margin: 0.3rem 0;
+}
+
+
+/* Responsive layout for mobile */
+@media (max-width: 768px) {
+    .container { flex-direction: column; padding: 0.5rem; }
+    #left-panel { padding-right: 0; }
+    .card { padding: 1rem; }
+}

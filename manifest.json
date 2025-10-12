@@ -1,0 +1,16 @@
+{
+  "name": "Thirukkural Explorer",
+  "short_name": "Kural",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f4f4f9",
+  "theme_color": "#333",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
