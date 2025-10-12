@@ -1,9 +1,10 @@
-const CACHE_NAME = 'thirukkural-app-v2';
+const CACHE_NAME = 'thirukkural-app-v3';
 const OFFLINE_ASSETS = [
   './',
   './index.html',
   './styles.css',
   './app.js',
+  './vendor/papaparse.min.js',
   './manifest.webmanifest',
   './thirukkural.csv',
   './icons/icon-192.png',
