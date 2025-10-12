@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thirukkural Explorer</title>
+    <meta name="theme-color" content="#2c3e50" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="branding">
+        <h1>Thirukkural Explorer</h1>
+        <p class="tagline">Discover wisdom across 1330 timeless couplets</p>
+      </div>
+      <button class="reset-button" id="resetFilters" type="button" title="Reset all filters">
+        Reset Filters
+      </button>
+    </header>
+
+    <main class="app-main">
+      <section class="filters" aria-label="Filters">
+        <div class="filter-group">
+          <label for="paulSelect">Paul</label>
+          <select id="paulSelect" class="combo">
+            <option value="">All Paul</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="iyalSelect">Iyal</label>
+          <select id="iyalSelect" class="combo" disabled>
+            <option value="">Select Paul first</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="adikaramSelect">Adikaram</label>
+          <select id="adikaramSelect" class="combo" disabled>
+            <option value="">Select Iyal first</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="kuralNumber">Kural Number</label>
+          <input id="kuralNumber" type="number" min="1" max="1330" placeholder="1 - 1330" />
+        </div>
+        <div class="filter-group search-group">
+          <label for="searchBox">Search</label>
+          <div class="search-wrapper">
+            <span aria-hidden="true" class="search-icon">🔍</span>
+            <input id="searchBox" type="search" placeholder="Search in kurals or explanations" autocomplete="off" />
+          </div>
+        </div>
+      </section>
+
+      <section class="toggles" aria-label="Explanation visibility">
+        <h2>Show Explanations</h2>
+        <div class="toggle-grid">
+          <label class="toggle">
+            <input type="checkbox" id="toggleEnglish" checked />
+            <span>English Explanation</span>
+          </label>
+          <label class="toggle">
+            <input type="checkbox" id="toggleMK" checked />
+            <span>M. Karunanidhi</span>
+          </label>
+          <label class="toggle">
+            <input type="checkbox" id="toggleMV" checked />
+            <span>M. Varadarajan</span>
+          </label>
+          <label class="toggle">
+            <input type="checkbox" id="toggleSP" checked />
+            <span>Solomon Pappaiya</span>
+          </label>
+        </div>
+      </section>
+
+      <section class="results" aria-live="polite" aria-busy="true">
+        <div class="results-summary" id="resultsSummary">Loading kurals…</div>
+        <div id="resultsContainer" class="results-container"></div>
+      </section>
+    </main>
+
+    <template id="kuralTemplate">
+      <article class="kural-card">
+        <header>
+          <p class="kural-number">#<span data-field="number"></span></p>
+          <div class="kural-meta">
+            <span class="meta-chip" data-field="paul"></span>
+            <span class="meta-chip" data-field="iyal"></span>
+            <span class="meta-chip" data-field="adikaram"></span>
+          </div>
+        </header>
+        <h3 class="kural-text" data-field="kural"></h3>
+        <p class="paul-translation" data-field="paulTranslation"></p>
+        <div class="explanations">
+          <section class="explanation" data-section="english">
+            <h4>English Explanation</h4>
+            <p data-field="english"></p>
+          </section>
+          <section class="explanation" data-section="mk">
+            <h4>M. Karunanidhi</h4>
+            <p data-field="mk"></p>
+          </section>
+          <section class="explanation" data-section="mv">
+            <h4>M. Varadarajan</h4>
+            <p data-field="mv"></p>
+          </section>
+          <section class="explanation" data-section="sp">
+            <h4>Solomon Pappaiya</h4>
+            <p data-field="sp"></p>
+          </section>
+        </div>
+      </article>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" integrity="sha256-VRduCMsZ/H1CHsI5OGucs5cjox96D65gis6pZeRAgvE=" crossorigin="anonymous"></script>
+    <script src="app.js" defer></script>
+  </body>
+</html>
