@@ -1,3 +1,30 @@
+let deferredPrompt = null;
+let installCardElement = null;
+
+function showInstallCard() {
+    if (installCardElement) {
+        installCardElement.classList.remove('hidden');
+    }
+}
+
+function hideInstallCard() {
+    if (installCardElement) {
+        installCardElement.classList.add('hidden');
+    }
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    showInstallCard();
+});
+
+window.addEventListener('appinstalled', () => {
+    hideInstallCard();
+    deferredPrompt = null;
+    console.log('PWA was installed');
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements
     const paulSelect = document.getElementById('paul-select');
@@ -13,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevButton = document.getElementById('prev-button');
     const nextButton = document.getElementById('next-button');
     const pageInfoSpan = document.getElementById('page-info');
-    const installCard = document.getElementById('install-card');
+    installCardElement = document.getElementById('install-card');
     const installButton = document.getElementById('install-button');
 
     const checkboxes = {
@@ -26,29 +53,19 @@ document.addEventListener('DOMContentLoaded', () => {
     let kuralData = [];
     let currentFilteredResults = [];
     let currentPage = 1;
-    let deferredPrompt;
 
-    // --- PWA Install Logic ---
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        installCard.classList.remove('hidden');
-    });
+    if (deferredPrompt) {
+        showInstallCard();
+    }
 
     installButton.addEventListener('click', async () => {
-        installCard.classList.add('hidden');
+        hideInstallCard();
         if (deferredPrompt) {
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
             console.log(`User response to the install prompt: ${outcome}`);
             deferredPrompt = null;
         }
-    });
-
-    window.addEventListener('appinstalled', () => {
-        installCard.classList.add('hidden');
-        deferredPrompt = null;
-        console.log('PWA was installed');
     });
 
     // --- Data Loading ---
