@@ -63,7 +63,7 @@ function getUniqueSorted(values) {
 
 function updatePaulOptions() {
   const pauls = getUniqueSorted(state.kurals.map((item) => item.paul_name));
-  populateSelect(selectors.paul, pauls, 'All Paul');
+  populateSelect(selectors.paul, pauls, 'அனைத்து பால்');
 }
 
 function updateIyalOptions(selectedPaul) {
@@ -72,7 +72,12 @@ function updateIyalOptions(selectedPaul) {
       .filter((item) => !selectedPaul || item.paul_name === selectedPaul)
       .map((item) => item.iyal_name)
   );
-  populateSelect(selectors.iyal, iyals, selectedPaul ? 'All Iyal' : 'Select Paul first', !selectedPaul);
+  populateSelect(
+    selectors.iyal,
+    iyals,
+    selectedPaul ? 'அனைத்து இயல்' : 'முதலில் பாலைத் தேர்ந்தெடுக்கவும்',
+    !selectedPaul
+  );
 }
 
 function updateAdikaramOptions(selectedPaul, selectedIyal) {
@@ -88,7 +93,7 @@ function updateAdikaramOptions(selectedPaul, selectedIyal) {
   populateSelect(
     selectors.adikaram,
     adikarams,
-    selectedIyal ? 'All Adikaram' : 'Select Iyal first',
+    selectedIyal ? 'அனைத்து அதிகாரம்' : 'முதலில் இயலைத் தேர்ந்தெடுக்கவும்',
     !selectedIyal
   );
 }
@@ -111,7 +116,7 @@ function validateNumberInput() {
   }
   const numberValue = Number.parseInt(value, 10);
   if (Number.isNaN(numberValue) || numberValue < 1 || numberValue > 1330) {
-    selectors.kuralNumber.setCustomValidity('Please enter a number between 1 and 1330.');
+    selectors.kuralNumber.setCustomValidity('1 முதல் 1330 வரை உள்ள எண்ணை உள்ளிடவும்.');
     return false;
   }
   selectors.kuralNumber.setCustomValidity('');
@@ -128,7 +133,7 @@ function debounced(fn, delay = 250) {
 
 function filterKurals() {
   if (!validateNumberInput()) {
-    selectors.resultsSummary.textContent = 'Please enter a valid Kural number between 1 and 1330.';
+    selectors.resultsSummary.textContent = '1 முதல் 1330 வரை செல்லுபடியான குறள் எண்ணை உள்ளிடவும்.';
     selectors.resultsSummary.classList.add('error-message');
     selectors.resultsContainer.innerHTML = '';
     return;
@@ -177,14 +182,14 @@ function filterKurals() {
 }
 
 function updateSummary(count) {
-  const base = count === 1 ? 'Showing 1 kural' : `Showing ${count} kurals`;
+  const base = count === 1 ? '1 குறள் காண்பிக்கப்பட்டது' : `${count} குறள்கள் காண்பிக்கப்படுகின்றன`;
   const extraFilters = [];
 
-  if (selectors.paul.value) extraFilters.push(`Paul: ${selectors.paul.value}`);
-  if (selectors.iyal.value) extraFilters.push(`Iyal: ${selectors.iyal.value}`);
-  if (selectors.adikaram.value) extraFilters.push(`Adikaram: ${selectors.adikaram.value}`);
-  if (selectors.kuralNumber.value) extraFilters.push(`Kural #${selectors.kuralNumber.value}`);
-  if (selectors.search.value.trim()) extraFilters.push(`Search: "${selectors.search.value.trim()}"`);
+  if (selectors.paul.value) extraFilters.push(`பால்: ${selectors.paul.value}`);
+  if (selectors.iyal.value) extraFilters.push(`இயல்: ${selectors.iyal.value}`);
+  if (selectors.adikaram.value) extraFilters.push(`அதிகாரம்: ${selectors.adikaram.value}`);
+  if (selectors.kuralNumber.value) extraFilters.push(`குறள் எண் ${selectors.kuralNumber.value}`);
+  if (selectors.search.value.trim()) extraFilters.push(`தேடல்: "${selectors.search.value.trim()}"`);
 
   selectors.resultsSummary.textContent = extraFilters.length ? `${base} • ${extraFilters.join(' • ')}` : base;
 }
@@ -196,7 +201,7 @@ function renderKurals(kurals) {
   if (!kurals.length) {
     const empty = document.createElement('div');
     empty.className = 'empty-state';
-    empty.textContent = 'No kurals matched your filters. Try adjusting your selections or search term.';
+    empty.textContent = 'உங்கள் வடிகட்டல்களுக்கு ஏற்ற குறள் எதுவும் இல்லை. உங்கள் தேர்வுகளை அல்லது தேடல் சொல்லை மாற்றிப் பார்க்கவும்.';
     selectors.resultsContainer.appendChild(empty);
     updateSummary(0);
     setBusy(false);
@@ -214,7 +219,7 @@ function renderKurals(kurals) {
     clone.querySelector('[data-field="kural"]').innerHTML = formatKural(item.kural);
     const paulTranslation = clone.querySelector('[data-field="paulTranslation"]');
     paulTranslation.textContent = item.paul_translation
-      ? `Paul Translation: ${item.paul_translation}`
+      ? `பால் பெயர்ப்பு: ${item.paul_translation}`
       : '';
 
     clone.querySelector('[data-field="english"]').textContent = item.explanation;
@@ -301,7 +306,7 @@ async function loadKurals() {
   try {
     const response = await fetch('thirukkural.csv');
     if (!response.ok) {
-      throw new Error('Unable to load data.');
+      throw new Error('தரவை ஏற்ற முடியவில்லை.');
     }
     const text = await response.text();
     const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
@@ -332,7 +337,7 @@ async function loadKurals() {
     updateAdikaramOptions('', '');
     filterKurals();
   } catch (error) {
-    selectors.resultsSummary.textContent = 'Failed to load the Thirukkural collection. Please try again later.';
+    selectors.resultsSummary.textContent = 'திருக்குறள் தொகுப்பை ஏற்ற முடியவில்லை. தயவு செய்து பின்னர் முயற்சிக்கவும்.';
     selectors.resultsSummary.classList.add('error-message');
     selectors.resultsContainer.innerHTML = '';
     console.error(error);
@@ -344,7 +349,7 @@ function registerServiceWorker() {
     window.addEventListener('load', () => {
       navigator.serviceWorker
         .register('service-worker.js')
-        .catch((error) => console.error('Service worker registration failed:', error));
+        .catch((error) => console.error('சேவைப் பணியாளர் பதிவு தோல்வியடைந்தது:', error));
     });
   }
 }
