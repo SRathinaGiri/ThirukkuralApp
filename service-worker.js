@@ -1,4 +1,4 @@
-const CACHE_NAME = 'thirukkural-app-v1';
+const CACHE_NAME = 'thirukkural-app-v2';
 const OFFLINE_ASSETS = [
   './',
   './index.html',
