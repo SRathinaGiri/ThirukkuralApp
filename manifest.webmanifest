@@ -1,11 +1,11 @@
 {
-  "name": "Thirukkural Explorer",
-  "short_name": "Kurals",
+  "name": "திருக்குறள் தேடல் செயலி",
+  "short_name": "குறள்",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#f6f8fb",
   "theme_color": "#2c3e50",
-  "description": "Browse and search the 1330 couplets of Thirukkural with detailed explanations.",
+  "description": "1330 திருக்குறள் ஜோடிகளையும் அவற்றின் விளக்கங்களையும் தேடிப் பார்வையிடுங்கள்.",
   "icons": [
     {
       "src": "icons/icon-192.png",
