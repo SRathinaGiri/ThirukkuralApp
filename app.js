@@ -9,11 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInExplanationsCheckbox = document.getElementById('search-in-explanations');
     const kuralsPerPageSelect = document.getElementById('kurals-per-page');
     const resultsContainer = document.getElementById('results-container');
-    const statsContainer = document.getElementById('stats-container');
-    const kuralCountSpan = document.getElementById('kural-count');
-    const wordCountSpan = document.getElementById('word-count');
-    const topWordsList = document.getElementById('top-words-list');
-    const topWordsContainer = document.getElementById('top-words-container');
     const paginationContainer = document.getElementById('pagination-container');
     const prevButton = document.getElementById('prev-button');
     const nextButton = document.getElementById('next-button');
@@ -143,48 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Statistics ---
-    function updateStatistics(kurals) {
-        if (kurals.length <= 1 || kurals.length === kuralData.length) {
-            statsContainer.classList.add('hidden');
-            return;
-        }
-
-        statsContainer.classList.remove('hidden');
-        kuralCountSpan.textContent = kurals.length;
-
-        let totalWords = 0;
-        const wordFrequencies = {};
-        const tamilStopWords = ['ஒரு', 'மற்றும்', 'என', 'போல்', 'அது', 'அவர்', 'தன்', 'இல்', 'கண்', 'என்', 'தம்', 'செயல்', 'வேண்டும்'];
-
-        kurals.forEach(k => {
-            if (k.kural) {
-                const words = k.kural.replace(/[.,;!?]/g, '').trim().split(/\s+/);
-                totalWords += words.length;
-                words.forEach(word => {
-                    if (word && !tamilStopWords.includes(word)) {
-                        wordFrequencies[word] = (wordFrequencies[word] || 0) + 1;
-                    }
-                });
-            }
-        });
-        wordCountSpan.textContent = totalWords;
-
-        const sortedWords = Object.entries(wordFrequencies).sort((a, b) => b[1] - a[1]).slice(0, 10);
-
-        topWordsList.innerHTML = '';
-        if (sortedWords.length > 0) {
-            topWordsContainer.classList.remove('hidden');
-            sortedWords.forEach(([word, count]) => {
-                const li = document.createElement('li');
-                li.textContent = `${word} (${count})`;
-                topWordsList.appendChild(li);
-            });
-        } else {
-            topWordsContainer.classList.add('hidden');
-        }
-    }
-
     // --- Filtering ---
     function filterAndDisplay() {
         const selectedPaul = paulSelect.value;
@@ -223,7 +176,6 @@ document.addEventListener('DOMContentLoaded', () => {
         currentFilteredResults = filtered;
         currentPage = 1;
         renderCurrentPage();
-        updateStatistics(currentFilteredResults);
     }
 
     // --- Event Listeners ---
