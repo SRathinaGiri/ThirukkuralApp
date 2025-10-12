@@ -1,5 +1,5 @@
 // Change the version number (e.g., v2, v3) to trigger an update for users
-const staticCacheName = 'thirukkural-pwa-v7';
+const staticCacheName = 'thirukkural-pwa-v8';
 
 const assets = [
     './',
