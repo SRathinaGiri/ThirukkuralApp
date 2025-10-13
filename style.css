@@ -30,6 +30,34 @@ header {
     gap: 0.75rem;
 }
 
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.about-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--card-bg);
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.about-link:hover,
+.about-link:focus {
+    background-color: rgba(255, 255, 255, 0.35);
+    transform: scale(1.05);
+    outline: none;
+}
+
 .toggle-filters {
     background-color: var(--primary-color);
     color: var(--card-bg);
@@ -188,6 +216,32 @@ footer p {
 
 .app-version {
     font-weight: 600;
+    color: var(--dark-gray);
+}
+
+.about-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    text-align: center;
+    padding: 2rem 1rem;
+    background-color: var(--light-gray);
+}
+
+.about-page img {
+    width: 160px;
+    height: 160px;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+}
+
+.about-page h2 {
+    border: none;
+    margin: 0;
+    font-size: 1.5rem;
     color: var(--dark-gray);
 }
 

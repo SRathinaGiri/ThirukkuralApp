@@ -1,4 +1,4 @@
-const APP_VERSION = 'v1.1.0';
+const APP_VERSION = 'v1.2.0';
 
 let deferredPrompt = null;
 let installCardElement = null;
@@ -49,6 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const containerElement = document.querySelector('.container');
 
     const checkboxes = {
+        parimel: document.getElementById('show-parimel'),
+        manakudavar: document.getElementById('show-manakudavar'),
+        munusamy: document.getElementById('show-munusamy'),
         english: document.getElementById('show-english'),
         mk: document.getElementById('show-mk'),
         mv: document.getElementById('show-mv'),
@@ -161,6 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
             kuralCard.innerHTML = `
                 <div class="kural-header"><strong>குறள் ${kural.Number}</strong> | ${kural.paul_name} > ${kural.iyal_name} > ${kural.adikaram_name}</div>
                 <div class="kural-text-container"><div class="kural-text"><div>${line1}</div><div>${line2}</div></div></div>
+                <div class="explanation-section ${checkboxes.parimel.checked ? '' : 'hidden'}" data-expl="parimel"><h4>பரிமேலழகர்</h4><p>${kural.parimel || 'கிடைக்கவில்லை.'}</p></div>
+                <div class="explanation-section ${checkboxes.manakudavar.checked ? '' : 'hidden'}" data-expl="manakudavar"><h4>மணக்குடவர்</h4><p>${kural.manakudavar || 'கிடைக்கவில்லை.'}</p></div>
+                <div class="explanation-section ${checkboxes.munusamy.checked ? '' : 'hidden'}" data-expl="munusamy"><h4>திருக்குறள் முனுசாமி</h4><p>${kural.munusamy || 'கிடைக்கவில்லை.'}</p></div>
                 <div class="explanation-section ${checkboxes.english.checked ? '' : 'hidden'}" data-expl="english"><h4>ஆங்கில விளக்கம்</h4><p>${kural.explanation || 'கிடைக்கவில்லை.'}</p></div>
                 <div class="explanation-section ${checkboxes.mk.checked ? '' : 'hidden'}" data-expl="mk"><h4>மு. கருணாநிதி</h4><p>${kural.mk || 'கிடைக்கவில்லை.'}</p></div>
                 <div class="explanation-section ${checkboxes.mv.checked ? '' : 'hidden'}" data-expl="mv"><h4>மு. வரதராசன்</h4><p>${kural.mv || 'கிடைக்கவில்லை.'}</p></div>
@@ -198,7 +204,10 @@ document.addEventListener('DOMContentLoaded', () => {
             filtered = kuralData.filter(k => {
                 const kuralMatch = k.kural && k.kural.toLowerCase().includes(searchTerm);
                 if (!searchInExplanations) return kuralMatch;
-                const explanationMatch = (k.explanation && k.explanation.toLowerCase().includes(searchTerm)) ||
+                const explanationMatch = (k.parimel && k.parimel.toLowerCase().includes(searchTerm)) ||
+                                       (k.manakudavar && k.manakudavar.toLowerCase().includes(searchTerm)) ||
+                                       (k.munusamy && k.munusamy.toLowerCase().includes(searchTerm)) ||
+                                       (k.explanation && k.explanation.toLowerCase().includes(searchTerm)) ||
                                        (k.mk && k.mk.toLowerCase().includes(searchTerm)) ||
                                        (k.mv && k.mv.toLowerCase().includes(searchTerm)) ||
                                        (k.sp && k.sp.toLowerCase().includes(searchTerm));
