@@ -3,10 +3,32 @@ const APP_VERSION = 'v1.1.0';
 let deferredPrompt = null;
 let installCardElement = null;
 let orientationOverlayElement = null;
+let orientationDismissButton = null;
 let orientationActivationHandlersAttached = false;
+let orientationWarningDismissed = false;
 
 const portraitMediaQuery = window.matchMedia('(orientation: portrait)');
 const displayModeMediaQuery = window.matchMedia('(display-mode: standalone)');
+
+function isSmallScreen() {
+    return Math.min(window.innerWidth, window.innerHeight) < 768;
+}
+
+function shouldShowOrientationWarning() {
+    if (orientationWarningDismissed) {
+        return false;
+    }
+
+    if (!isSmallScreen()) {
+        return false;
+    }
+
+    if (portraitMediaQuery && typeof portraitMediaQuery.matches === 'boolean') {
+        return portraitMediaQuery.matches;
+    }
+
+    return window.innerHeight > window.innerWidth;
+}
 
 async function requestLandscapeLock() {
     if (!screen.orientation || typeof screen.orientation.lock !== 'function') {
@@ -29,14 +51,14 @@ function updateOrientationUI() {
         return;
     }
 
-    const isPortrait = portraitMediaQuery.matches;
-    document.body.classList.toggle('portrait-mode', isPortrait);
+    const shouldWarn = shouldShowOrientationWarning();
+    document.body.classList.toggle('portrait-mode', shouldWarn);
 
     if (orientationOverlayElement) {
-        orientationOverlayElement.classList.toggle('hidden', !isPortrait);
+        orientationOverlayElement.classList.toggle('hidden', !shouldWarn);
     }
 
-    if (!isPortrait) {
+    if (!shouldWarn) {
         requestLandscapeLock();
     }
 }
@@ -61,7 +83,9 @@ function addUserActivationOrientationHandlers() {
     const activationEvents = ['click', 'touchstart', 'pointerdown'];
 
     const handleActivation = () => {
-        requestLandscapeLock();
+        if (!shouldShowOrientationWarning()) {
+            requestLandscapeLock();
+        }
     };
 
     activationEvents.forEach((evt) => {
@@ -103,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     installCardElement = document.getElementById('install-card');
     const installButton = document.getElementById('install-button');
     orientationOverlayElement = document.getElementById('orientation-lock');
+    orientationDismissButton = document.getElementById('dismiss-orientation');
     const appVersionElement = document.getElementById('app-version');
 
     const checkboxes = {
@@ -124,27 +149,49 @@ document.addEventListener('DOMContentLoaded', () => {
         showInstallCard();
     }
 
-    requestLandscapeLock();
     updateOrientationUI();
     addUserActivationOrientationHandlers();
 
-    if (typeof portraitMediaQuery.addEventListener === 'function') {
-        portraitMediaQuery.addEventListener('change', updateOrientationUI);
-    } else if (typeof portraitMediaQuery.addListener === 'function') {
-        portraitMediaQuery.addListener(updateOrientationUI);
+    if (orientationDismissButton) {
+        orientationDismissButton.addEventListener('click', () => {
+            orientationWarningDismissed = true;
+            updateOrientationUI();
+        });
     }
 
-    window.addEventListener('orientationchange', updateOrientationUI);
+    if (portraitMediaQuery) {
+        if (typeof portraitMediaQuery.addEventListener === 'function') {
+            portraitMediaQuery.addEventListener('change', () => {
+                orientationWarningDismissed = false;
+                updateOrientationUI();
+            });
+        } else if (typeof portraitMediaQuery.addListener === 'function') {
+            portraitMediaQuery.addListener(() => {
+                orientationWarningDismissed = false;
+                updateOrientationUI();
+            });
+        }
+    }
+
+    window.addEventListener('orientationchange', () => {
+        orientationWarningDismissed = false;
+        updateOrientationUI();
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > window.innerHeight) {
+            orientationWarningDismissed = false;
+        }
+        updateOrientationUI();
+    });
 
     if (screen.orientation) {
         if (typeof screen.orientation.addEventListener === 'function') {
             screen.orientation.addEventListener('change', () => {
-                requestLandscapeLock();
                 updateOrientationUI();
             });
         } else if (typeof screen.orientation.addListener === 'function') {
             screen.orientation.addListener(() => {
-                requestLandscapeLock();
                 updateOrientationUI();
             });
         }
@@ -152,18 +199,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('visibilitychange', () => {
         if (!document.hidden) {
-            requestLandscapeLock();
+            orientationWarningDismissed = false;
+            updateOrientationUI();
         }
     });
 
     if (displayModeMediaQuery && typeof displayModeMediaQuery.addEventListener === 'function') {
         displayModeMediaQuery.addEventListener('change', () => {
-            requestLandscapeLock();
             updateOrientationUI();
         });
     } else if (displayModeMediaQuery && typeof displayModeMediaQuery.addListener === 'function') {
         displayModeMediaQuery.addListener(() => {
-            requestLandscapeLock();
             updateOrientationUI();
         });
     }
