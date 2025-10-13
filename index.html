@@ -11,7 +11,10 @@
 <body>
 
     <header>
-        <h1>திருக்குறள் ஆய்வி</h1>
+        <div class="header-top">
+            <h1>திருக்குறள் ஆய்வி</h1>
+            <a class="about-link" href="about.html" aria-label="பற்றி">ℹ️</a>
+        </div>
         <button id="toggle-filters" class="toggle-filters" aria-expanded="true" aria-controls="left-panel">வடிப்பான்களை மறை</button>
     </header>
 
@@ -80,6 +83,18 @@
             <div class="card explanations">
                 <h2>விளக்கங்களைக் காட்டவும்</h2>
                 <div class="checkbox-group">
+                    <input type="checkbox" id="show-parimel" checked>
+                    <label for="show-parimel">பரிமேலழகர்</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="show-manakudavar" checked>
+                    <label for="show-manakudavar">மணக்குடவர்</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="show-munusamy" checked>
+                    <label for="show-munusamy">திருக்குறள் முனுசாமி</label>
+                </div>
+                <div class="checkbox-group">
                     <input type="checkbox" id="show-english" checked>
                     <label for="show-english">ஆங்கில விளக்கம்</label>
                 </div>
@@ -112,7 +127,7 @@
 
     <footer>
         <p>ஒருங்கிணைப்பு: <strong>சுப. இரத்தினகிரி</strong></p>
-        <p>உருவாக்கம்: <strong>கூகிள் ஜெமினி</strong></p>
+        <p>உருவாக்கம்: <strong>கூகிள் ஜெமினி &amp; GPT-5 Codex</strong></p>
         <p id="app-version" class="app-version"></p>
     </footer>
 
