@@ -45,6 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
     installCardElement = document.getElementById('install-card');
     const installButton = document.getElementById('install-button');
     const appVersionElement = document.getElementById('app-version');
+    const toggleFiltersButton = document.getElementById('toggle-filters');
+    const containerElement = document.querySelector('.container');
 
     const checkboxes = {
         english: document.getElementById('show-english'),
@@ -63,6 +65,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (deferredPrompt) {
         showInstallCard();
+    }
+
+    function updateFilterToggleState() {
+        if (!toggleFiltersButton || !containerElement) {
+            return;
+        }
+        const isCollapsed = containerElement.classList.contains('filters-collapsed');
+        toggleFiltersButton.textContent = isCollapsed ? 'வடிப்பான்களை காட்டு' : 'வடிப்பான்களை மறை';
+        toggleFiltersButton.setAttribute('aria-expanded', (!isCollapsed).toString());
+    }
+
+    if (toggleFiltersButton && containerElement) {
+        updateFilterToggleState();
+        toggleFiltersButton.addEventListener('click', () => {
+            containerElement.classList.toggle('filters-collapsed');
+            updateFilterToggleState();
+        });
     }
 
     installButton.addEventListener('click', async () => {
