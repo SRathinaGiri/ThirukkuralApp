@@ -15,6 +15,7 @@ body {
     color: var(--text-color);
     margin: 0;
     line-height: 1.6;
+    font-size: 0.95rem;
 }
 
 header {
@@ -23,6 +24,34 @@ header {
     padding: 1rem;
     text-align: center;
     box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.toggle-filters {
+    background-color: var(--primary-color);
+    color: var(--card-bg);
+    border: none;
+    border-radius: 4px;
+    padding: 0.55rem 1.25rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: background-color 0.2s;
+}
+
+.toggle-filters:hover,
+.toggle-filters:focus {
+    background-color: #357ABD;
+    outline: none;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.8rem;
 }
 
 .container {
@@ -31,10 +60,19 @@ header {
     padding: 1rem;
     max-width: 1200px;
     margin: 0 auto;
+    gap: 1rem;
 }
 
-#left-panel { flex: 1; min-width: 280px; padding-right: 1rem; }
+#left-panel { flex: 1; min-width: 280px; padding-right: 0; }
 #right-panel { flex: 3; min-width: 300px; }
+
+.container.filters-collapsed #left-panel {
+    display: none;
+}
+
+.container.filters-collapsed #right-panel {
+    flex: 1 1 100%;
+}
 
 /* Card Styling */
 .card {
@@ -52,17 +90,29 @@ h2, h3 {
     padding-bottom: 0.5rem;
 }
 
+h2 { font-size: 1.35rem; }
+h3 { font-size: 1.15rem; }
+
 hr { border: none; border-top: 1px solid #eee; margin: 1.5rem 0; }
 
 /* Filter & Search Styling */
 .filter-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #666; }
-.dropdown, input[type="number"], input[type="text"] { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; box-sizing: border-box; }
+.dropdown,
+input[type="number"],
+input[type="text"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+}
 .checkbox-group { display: flex; align-items: center; margin-bottom: 0.5rem; }
 .checkbox-group.search-option { margin: 1rem 0; }
 .checkbox-group.search-option label { font-weight: normal; }
 
 #search-button {
-    width: 100%; padding: 0.9rem; font-size: 1.1rem; font-weight: bold;
+    width: 100%; padding: 0.85rem; font-size: 1rem; font-weight: 600;
     color: var(--card-bg); background-color: var(--primary-color);
     border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.2s;
 }
@@ -70,7 +120,7 @@ hr { border: none; border-top: 1px solid #eee; margin: 1.5rem 0; }
 
 /* Install Button Styling */
 #install-button {
-    width: 100%; padding: 0.9rem; font-size: 1.1rem; font-weight: bold;
+    width: 100%; padding: 0.85rem; font-size: 1rem; font-weight: 600;
     color: var(--card-bg); background-color: var(--secondary-color);
     border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.2s;
 }
@@ -85,9 +135,9 @@ hr { border: none; border-top: 1px solid #eee; margin: 1.5rem 0; }
     box-shadow: var(--shadow);
     border-left: 5px solid var(--primary-color);
 }
-.kural-header { font-size: 0.9rem; color: #777; margin-bottom: 1rem; }
+.kural-header { font-size: 0.85rem; color: #777; margin-bottom: 1rem; }
 .kural-text-container { background-color: #fdfdfd; border: 1px solid #eee; border-radius: 6px; padding: 1rem; margin: 1rem 0; }
-.kural-text { font-size: 1.5rem; font-weight: bold; line-height: 2.2rem; color: #222; }
+.kural-text { font-size: 1.35rem; font-weight: bold; line-height: 2rem; color: #222; }
 .explanation-section { margin-top: 1rem; padding-left: 1rem; border-left: 3px solid #eee; }
 .explanation-section h4 { margin: 0 0 0.5rem 0; color: var(--primary-color); }
 .explanation-section p { margin: 0; font-style: italic; color: #555; }
@@ -102,7 +152,7 @@ hr { border: none; border-top: 1px solid #eee; margin: 1.5rem 0; }
 }
 #pagination-container button {
     padding: 0.5rem 1rem;
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: var(--card-bg);
     background-color: var(--primary-color);
     border: none;
@@ -116,6 +166,7 @@ hr { border: none; border-top: 1px solid #eee; margin: 1.5rem 0; }
 #page-info {
     margin: 0 1rem;
     font-weight: bold;
+    font-size: 0.95rem;
 }
 
 .hidden { display: none; }
@@ -127,7 +178,7 @@ footer {
     margin-top: 2rem;
     background-color: #e9ecef;
     color: #6c757d;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     border-top: 1px solid #dee2e6;
 }
 
