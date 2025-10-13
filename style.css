@@ -17,6 +17,10 @@ body {
     line-height: 1.6;
 }
 
+body.portrait-mode {
+    overflow: hidden;
+}
+
 header {
     background-color: var(--dark-gray);
     color: var(--card-bg);
@@ -119,6 +123,33 @@ hr { border: none; border-top: 1px solid #eee; margin: 1.5rem 0; }
 }
 
 .hidden { display: none; }
+
+.orientation-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    z-index: 1000;
+}
+
+.orientation-message {
+    max-width: 480px;
+}
+
+.orientation-message h2 {
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.orientation-message p {
+    margin: 0;
+    font-size: 1.1rem;
+}
 
 /* Footer Styling */
 footer {
