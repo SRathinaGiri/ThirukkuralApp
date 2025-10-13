@@ -166,6 +166,11 @@ footer p {
     margin: 0.3rem 0;
 }
 
+.app-version {
+    font-weight: 600;
+    color: var(--dark-gray);
+}
+
 /* Responsive layout for mobile */
 @media (max-width: 768px) {
     .container {

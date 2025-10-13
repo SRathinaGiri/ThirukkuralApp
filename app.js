@@ -1,15 +1,26 @@
+const APP_VERSION = 'v1.1.0';
+
 let deferredPrompt = null;
 let installCardElement = null;
 let orientationOverlayElement = null;
+let orientationActivationHandlersAttached = false;
 
 const portraitMediaQuery = window.matchMedia('(orientation: portrait)');
 const displayModeMediaQuery = window.matchMedia('(display-mode: standalone)');
 
-function requestLandscapeLock() {
-    if (screen.orientation && typeof screen.orientation.lock === 'function') {
-        screen.orientation.lock('landscape').catch((err) => {
-            console.debug('Orientation lock not supported or denied:', err);
-        });
+async function requestLandscapeLock() {
+    if (!screen.orientation || typeof screen.orientation.lock !== 'function') {
+        return;
+    }
+
+    try {
+        await screen.orientation.lock('landscape');
+    } catch (err) {
+        try {
+            await screen.orientation.lock('landscape-primary');
+        } catch (fallbackErr) {
+            console.debug('Orientation lock not supported or denied:', fallbackErr);
+        }
     }
 }
 
@@ -40,6 +51,24 @@ function hideInstallCard() {
     if (installCardElement) {
         installCardElement.classList.add('hidden');
     }
+}
+
+function addUserActivationOrientationHandlers() {
+    if (!screen.orientation || typeof screen.orientation.lock !== 'function' || orientationActivationHandlersAttached) {
+        return;
+    }
+
+    const activationEvents = ['click', 'touchstart', 'pointerdown'];
+
+    const handleActivation = () => {
+        requestLandscapeLock();
+    };
+
+    activationEvents.forEach((evt) => {
+        document.addEventListener(evt, handleActivation, false);
+    });
+
+    orientationActivationHandlersAttached = true;
 }
 
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -74,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     installCardElement = document.getElementById('install-card');
     const installButton = document.getElementById('install-button');
     orientationOverlayElement = document.getElementById('orientation-lock');
+    const appVersionElement = document.getElementById('app-version');
 
     const checkboxes = {
         english: document.getElementById('show-english'),
@@ -86,12 +116,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentFilteredResults = [];
     let currentPage = 1;
 
+    if (appVersionElement) {
+        appVersionElement.textContent = `பதிப்பு: ${APP_VERSION}`;
+    }
+
     if (deferredPrompt) {
         showInstallCard();
     }
 
     requestLandscapeLock();
     updateOrientationUI();
+    addUserActivationOrientationHandlers();
 
     if (typeof portraitMediaQuery.addEventListener === 'function') {
         portraitMediaQuery.addEventListener('change', updateOrientationUI);
@@ -100,6 +135,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.addEventListener('orientationchange', updateOrientationUI);
+
+    if (screen.orientation) {
+        if (typeof screen.orientation.addEventListener === 'function') {
+            screen.orientation.addEventListener('change', () => {
+                requestLandscapeLock();
+                updateOrientationUI();
+            });
+        } else if (typeof screen.orientation.addListener === 'function') {
+            screen.orientation.addListener(() => {
+                requestLandscapeLock();
+                updateOrientationUI();
+            });
+        }
+    }
+
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            requestLandscapeLock();
+        }
+    });
 
     if (displayModeMediaQuery && typeof displayModeMediaQuery.addEventListener === 'function') {
         displayModeMediaQuery.addEventListener('change', () => {
