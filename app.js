@@ -2,66 +2,6 @@ const APP_VERSION = 'v1.1.0';
 
 let deferredPrompt = null;
 let installCardElement = null;
-let orientationOverlayElement = null;
-let orientationDismissButton = null;
-let orientationActivationHandlersAttached = false;
-let orientationWarningDismissed = false;
-
-const portraitMediaQuery = window.matchMedia('(orientation: portrait)');
-const displayModeMediaQuery = window.matchMedia('(display-mode: standalone)');
-
-function isSmallScreen() {
-    return Math.min(window.innerWidth, window.innerHeight) < 768;
-}
-
-function shouldShowOrientationWarning() {
-    if (orientationWarningDismissed) {
-        return false;
-    }
-
-    if (!isSmallScreen()) {
-        return false;
-    }
-
-    if (portraitMediaQuery && typeof portraitMediaQuery.matches === 'boolean') {
-        return portraitMediaQuery.matches;
-    }
-
-    return window.innerHeight > window.innerWidth;
-}
-
-async function requestLandscapeLock() {
-    if (!screen.orientation || typeof screen.orientation.lock !== 'function') {
-        return;
-    }
-
-    try {
-        await screen.orientation.lock('landscape');
-    } catch (err) {
-        try {
-            await screen.orientation.lock('landscape-primary');
-        } catch (fallbackErr) {
-            console.debug('Orientation lock not supported or denied:', fallbackErr);
-        }
-    }
-}
-
-function updateOrientationUI() {
-    if (!document.body) {
-        return;
-    }
-
-    const shouldWarn = shouldShowOrientationWarning();
-    document.body.classList.toggle('portrait-mode', shouldWarn);
-
-    if (orientationOverlayElement) {
-        orientationOverlayElement.classList.toggle('hidden', !shouldWarn);
-    }
-
-    if (!shouldWarn) {
-        requestLandscapeLock();
-    }
-}
 
 function showInstallCard() {
     if (installCardElement) {
@@ -75,26 +15,6 @@ function hideInstallCard() {
     }
 }
 
-function addUserActivationOrientationHandlers() {
-    if (!screen.orientation || typeof screen.orientation.lock !== 'function' || orientationActivationHandlersAttached) {
-        return;
-    }
-
-    const activationEvents = ['click', 'touchstart', 'pointerdown'];
-
-    const handleActivation = () => {
-        if (!shouldShowOrientationWarning()) {
-            requestLandscapeLock();
-        }
-    };
-
-    activationEvents.forEach((evt) => {
-        document.addEventListener(evt, handleActivation, false);
-    });
-
-    orientationActivationHandlersAttached = true;
-}
-
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -105,8 +25,6 @@ window.addEventListener('appinstalled', () => {
     hideInstallCard();
     deferredPrompt = null;
     console.log('PWA was installed');
-    requestLandscapeLock();
-    updateOrientationUI();
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -126,8 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageInfoSpan = document.getElementById('page-info');
     installCardElement = document.getElementById('install-card');
     const installButton = document.getElementById('install-button');
-    orientationOverlayElement = document.getElementById('orientation-lock');
-    orientationDismissButton = document.getElementById('dismiss-orientation');
     const appVersionElement = document.getElementById('app-version');
 
     const checkboxes = {
@@ -147,71 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (deferredPrompt) {
         showInstallCard();
-    }
-
-    updateOrientationUI();
-    addUserActivationOrientationHandlers();
-
-    if (orientationDismissButton) {
-        orientationDismissButton.addEventListener('click', () => {
-            orientationWarningDismissed = true;
-            updateOrientationUI();
-        });
-    }
-
-    if (portraitMediaQuery) {
-        if (typeof portraitMediaQuery.addEventListener === 'function') {
-            portraitMediaQuery.addEventListener('change', () => {
-                orientationWarningDismissed = false;
-                updateOrientationUI();
-            });
-        } else if (typeof portraitMediaQuery.addListener === 'function') {
-            portraitMediaQuery.addListener(() => {
-                orientationWarningDismissed = false;
-                updateOrientationUI();
-            });
-        }
-    }
-
-    window.addEventListener('orientationchange', () => {
-        orientationWarningDismissed = false;
-        updateOrientationUI();
-    });
-
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > window.innerHeight) {
-            orientationWarningDismissed = false;
-        }
-        updateOrientationUI();
-    });
-
-    if (screen.orientation) {
-        if (typeof screen.orientation.addEventListener === 'function') {
-            screen.orientation.addEventListener('change', () => {
-                updateOrientationUI();
-            });
-        } else if (typeof screen.orientation.addListener === 'function') {
-            screen.orientation.addListener(() => {
-                updateOrientationUI();
-            });
-        }
-    }
-
-    document.addEventListener('visibilitychange', () => {
-        if (!document.hidden) {
-            orientationWarningDismissed = false;
-            updateOrientationUI();
-        }
-    });
-
-    if (displayModeMediaQuery && typeof displayModeMediaQuery.addEventListener === 'function') {
-        displayModeMediaQuery.addEventListener('change', () => {
-            updateOrientationUI();
-        });
-    } else if (displayModeMediaQuery && typeof displayModeMediaQuery.addListener === 'function') {
-        displayModeMediaQuery.addListener(() => {
-            updateOrientationUI();
-        });
     }
 
     installButton.addEventListener('click', async () => {
