@@ -1,5 +1,5 @@
 // Change the version number (e.g., v2, v3) to trigger an update for users
-const staticCacheName = 'thirukkural-pwa-v9';
+const staticCacheName = 'thirukkural-pwa-v10';
 
 const assets = [
     './',
@@ -9,7 +9,8 @@ const assets = [
     './app.js',
     './thirukkural.csv',
     './icon-512x512.png',
-    './manifest.json'
+    './manifest.json',
+    './papaparse.min.js'
 ];
 
 // Install event
